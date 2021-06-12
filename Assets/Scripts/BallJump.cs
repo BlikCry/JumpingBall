@@ -8,6 +8,8 @@ public class BallJump : MonoBehaviour
     [SerializeField]
     private float force = 10;
     [SerializeField]
+    private float jumpInterval = 0.4f;
+    [SerializeField]
     private AudioSource jumpSource;
 
     public Vector2 Position => ballRigidbody.position;
@@ -15,6 +17,7 @@ public class BallJump : MonoBehaviour
 
     private CircleCollider2D circleCollider;
     private bool isJumping;
+    private float lastJumpTime = float.NegativeInfinity;
 
     private void Awake()
     {
@@ -27,10 +30,21 @@ public class BallJump : MonoBehaviour
         if (!GroundScript.Instance.Started)
             return;
 
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0))
-            DoJump(true);
-        else if (isJumping && (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Mouse0)))
-            DoJump(false);
+        if (IsBallGrounded() && Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            DoJump();
+            isJumping = true;
+            lastJumpTime = Time.time;
+            jumpSource.Play();
+        }
+        else if (isJumping && Input.GetKey(KeyCode.Mouse0) && Time.time - lastJumpTime < jumpInterval)
+        {
+            DoJump();
+        }
+        else
+        {
+            isJumping = false;
+        }
     }
     
     public bool IsBallGrounded() => GetGround();
@@ -43,21 +57,8 @@ public class BallJump : MonoBehaviour
         return ground.transform.CompareTag("Ground") ? ground : ground.parent;
     }
     
-    private void DoJump(bool firstTouch)
-    {
-        if (firstTouch)
-            isJumping = true;
-
-        if (!IsBallGrounded())
-        {
-            isJumping = false;
-        }
-        if (!isJumping)
-            return;
-
-        if (firstTouch)
-            jumpSource.Play();
-
+    private void DoJump()
+    {   
         ballRigidbody.AddForce(Vector2.up * (force * ballRigidbody.mass * Time.deltaTime), ForceMode2D.Impulse);
     }
 }
