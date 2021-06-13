@@ -2103,6 +2103,7 @@ MonoBehaviour:
   circle: {fileID: 2235255638234764904, guid: 21c2d3ffe8864cf44a42aca907b9ddaa, type: 3}
   square: {fileID: 4807306615695133281, guid: f67d5e152f74809488e309c6ee7e308e, type: 3}
   angle5: {fileID: 1290790014699499524, guid: 200fe537370ea534d832c1cc67f011b8, type: 3}
+  star6: {fileID: 3554901653384496608, guid: 9fe5d46fab7fb354c85d1c17d8b43e1c, type: 3}
   innerGroundScale: 0.3
   deathLevel: -6
   Started: 0

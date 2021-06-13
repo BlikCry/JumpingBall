@@ -14,6 +14,8 @@ public class GroundScript : MonoBehaviour
     [SerializeField]
     private GameObject angle5;
     [SerializeField]
+    private GameObject star6;
+    [SerializeField]
     private float innerGroundScale = 0.3f;
     [SerializeField]
     private float deathLevel = -6f;
@@ -61,13 +63,23 @@ public class GroundScript : MonoBehaviour
         var obj = circle;
         if (Level >= 7 && Level < 12 && Random.value < 0.5)
             obj = angle5;
-        if (Level >= 12)
+        if (Level >= 12 && Level < 20)
         {
             var value = Random.Range(0, 3);
             if (value == 1)
                 obj = angle5;
             if (value == 2)
                 obj = square;
+        }
+        if (Level >= 20)
+        {
+            var value = Random.Range(0, 4);
+            if (value == 1)
+                obj = angle5;
+            if (value == 2)
+                obj = square;
+            if (value == 3)
+                obj = star6;
         }
 
         var newGround = Instantiate(obj, Vector3.zero, Quaternion.identity).transform;
