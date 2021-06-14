@@ -11,6 +11,8 @@ public class GameUI : MonoBehaviour
     [SerializeField]
     private TMP_Text levelText;
     [SerializeField]
+    private TMP_Text skipLevelText;
+    [SerializeField]
     private GameObject restartUI;
     [SerializeField]
     private GameObject highScoreText;
@@ -18,6 +20,8 @@ public class GameUI : MonoBehaviour
     private GameObject recordsButton;
     [SerializeField]
     private List<GameObject> disableOnStart;
+    [SerializeField]
+    private List<GameObject> enableOnStart;
 
     private int highScore;
     private bool isHighScoreShown;
@@ -36,8 +40,10 @@ public class GameUI : MonoBehaviour
 
     private void Update()
     {
-        recordsButton.SetActive(LeaderboardScript.IsAuthenticated);
-        levelText.text = GroundScript.Instance.Level.ToString();
+        if (!GroundScript.Instance.PrepareStarted)
+            recordsButton.SetActive(LeaderboardScript.IsAuthenticated);
+        levelText.text = Mathf.Max(GroundScript.Instance.Level, 1).ToString();
+        skipLevelText.text = (GroundScript.Instance.SkipLevels + 1).ToString();
         if (GroundScript.Instance.Level > highScore)
         {
             if (!isHighScoreShown)
@@ -55,12 +61,19 @@ public class GameUI : MonoBehaviour
     {
         if (beginGame)
         {
-            GroundScript.Instance.Started = true;
+            beginGame = false;
+            GroundScript.Instance.PrepareStarted = true;
             disableOnStart.ForEach(o => o.SetActive(false));
+            enableOnStart.ForEach(o => o.SetActive(true));
             Time.timeScale = 1;
         }
     }
 
+    public void SetTimeScale(float scale)
+    {
+        Time.timeScale = scale;
+    }
+    
     public void BeginGame()
     {
         beginGame = true;

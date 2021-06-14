@@ -11,8 +11,10 @@ public class BallJump : MonoBehaviour
     private float jumpInterval = 0.4f;
     [SerializeField]
     private AudioSource jumpSource;
-
+    [SerializeField]
+    private ButtonState jumpButton;
     public Vector2 Position => ballRigidbody.position;
+    public GameObject Ball => ballRigidbody.gameObject;
     public SpriteRenderer BallSpriteRenderer { get; private set; }
 
     private CircleCollider2D circleCollider;
@@ -27,17 +29,17 @@ public class BallJump : MonoBehaviour
 
     private void Update()
     {
-        if (!GroundScript.Instance.Started)
+        if (!GroundScript.Instance.PrepareStarted)
             return;
 
-        if (IsBallGrounded() && Input.GetKeyDown(KeyCode.Mouse0))
+        if (IsBallGrounded() && jumpButton.IsPointerDown) //Input.GetKeyDown(KeyCode.Mouse0))
         {
             DoJump();
             isJumping = true;
             lastJumpTime = Time.time;
             jumpSource.Play();
         }
-        else if (isJumping && Input.GetKey(KeyCode.Mouse0) && Time.time - lastJumpTime < jumpInterval)
+        else if (isJumping && jumpButton.IsPressed  && Time.time - lastJumpTime < jumpInterval)//&& Input.GetKey(KeyCode.Mouse0))
         {
             DoJump();
         }

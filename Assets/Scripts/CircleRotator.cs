@@ -21,6 +21,8 @@ public class CircleRotator : MonoBehaviour
 
     private void Start()
     {
+        transform.rotation = Quaternion.Euler(0, 0, 180);
+
         side = !side;
         speed = (Random.Range(minSpeed, maxSpeed) + speedPerLevel * GroundScript.Instance.Level) * (side ? 1 : -1);
         speed = Mathf.Clamp(speed, -totalMaxSpeed, totalMaxSpeed);
@@ -33,6 +35,7 @@ public class CircleRotator : MonoBehaviour
 
     private void Update()
     {
-        transform.Rotate(Vector3.forward, speed * Time.deltaTime);
+        if (GroundScript.Instance.LevelsSkipped)
+            transform.Rotate(Vector3.forward, speed * Time.deltaTime);
     }
 }
