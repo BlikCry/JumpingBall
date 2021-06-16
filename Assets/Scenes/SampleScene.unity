@@ -254,7 +254,9 @@ GameObject:
   m_Component:
   - component: {fileID: 79573139}
   - component: {fileID: 79573138}
+  - component: {fileID: 79573142}
   - component: {fileID: 79573140}
+  - component: {fileID: 79573141}
   m_Layer: 0
   m_Name: BackgroundMusic
   m_TagString: Untagged
@@ -272,11 +274,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e72b0a7e71af36c458efda41021e96e0, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_audioClip: {fileID: 8300000, guid: b2c1fea68d77b7e4a833cf77dbce8d4d, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.57
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -385,6 +387,118 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: BGM
+--- !u!114 &79573141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 79573137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25d699e1127d880429d3221e3244b71a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startupClip: {fileID: 8300000, guid: 2d9b100bd3f66a54e8f606f785dc97e7, type: 3}
+  loopClip: {fileID: 8300000, guid: b2c1fea68d77b7e4a833cf77dbce8d4d, type: 3}
+  source: {fileID: 79573138}
+  sourceLoop: {fileID: 79573142}
+--- !u!82 &79573142
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 79573137}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: b2c1fea68d77b7e4a833cf77dbce8d4d, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.57
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &152520634
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,6 +510,7 @@ GameObject:
   - component: {fileID: 152520637}
   - component: {fileID: 152520636}
   - component: {fileID: 152520635}
+  - component: {fileID: 152520638}
   m_Layer: 0
   m_Name: TapToPlayText
   m_TagString: Untagged
@@ -450,7 +565,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16.4
+  m_fontSize: 17.35
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -553,8 +668,27 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.07, y: 0.02}
-  m_SizeDelta: {x: 7.5588, y: 2.2472}
+  m_SizeDelta: {x: 8, y: 2.2472}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!95 &152520638
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 152520634}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6405ab5bc2c8dae4fb1cacbe5360023b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 2
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &178963173
 GameObject:
   m_ObjectHideFlags: 0
@@ -2557,7 +2691,7 @@ MonoBehaviour:
   restartUI: {fileID: 676517026}
   highScoreText: {fileID: 1527252538}
   recordsButton: {fileID: 352767315}
-  playGamesButton: {fileID: 0}
+  playGamesButton: {fileID: 439942958}
   disableOnStart:
   - {fileID: 152520634}
   - {fileID: 1030302886}
