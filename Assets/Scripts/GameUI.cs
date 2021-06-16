@@ -19,6 +19,8 @@ public class GameUI : MonoBehaviour
     [SerializeField]
     private GameObject recordsButton;
     [SerializeField]
+    private GameObject playGamesButton;
+    [SerializeField]
     private List<GameObject> disableOnStart;
     [SerializeField]
     private List<GameObject> enableOnStart;
@@ -41,7 +43,11 @@ public class GameUI : MonoBehaviour
     private void Update()
     {
         if (!GroundScript.Instance.PrepareStarted)
+        {
             recordsButton.SetActive(LeaderboardScript.IsAuthenticated);
+            playGamesButton.SetActive(!LeaderboardScript.IsAuthenticated);
+        }
+
         levelText.text = Mathf.Max(GroundScript.Instance.Level, 1).ToString();
         skipLevelText.text = (GroundScript.Instance.SkipLevels + 1).ToString();
         if (GroundScript.Instance.Level > highScore)
@@ -89,7 +95,11 @@ public class GameUI : MonoBehaviour
     {
         LeaderboardScript.ShowLeaderboard();
     }
-    
+
+    public void SignIn()
+    {
+        LeaderboardScript.SignIn();
+    }
     private void OnBallDeath()
     {
         Handheld.Vibrate();

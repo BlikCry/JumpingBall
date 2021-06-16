@@ -29,7 +29,7 @@ public class LeaderboardScript : MonoBehaviour
         SignIn();
     }
 
-    private static void SignIn()
+    public static void SignIn()
     {
         if (!Social.localUser.authenticated)
             Social.localUser.Authenticate(success => {});
@@ -37,13 +37,13 @@ public class LeaderboardScript : MonoBehaviour
 
     public static void SetLeaderboardResult(string leaderboard, int result)
     {
-        SignIn();
-        Social.ReportScore(result, leaderboard, success => {});
+        if (Social.localUser.authenticated)
+            Social.ReportScore(result, leaderboard, success => {});
     }
 
     public static void ShowLeaderboard()
     {
-        SignIn();
-        Social.ShowLeaderboardUI();
+        if (Social.localUser.authenticated)
+            Social.ShowLeaderboardUI();
     }
 }
