@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 public class GroundScript : MonoBehaviour
 {
-    private const string CheckpointKey = "CHECKPOINT";
+    public const string CheckpointKey = "CHECKPOINT";
 
     [SerializeField]
     private BallJump ballJump;
@@ -62,7 +62,7 @@ public class GroundScript : MonoBehaviour
         if (ballJump.Position.y < deathLevel)
         {
             isDead = true;
-            skipLevels = Math.Max(Level / 5 * 5 - 6, 0);
+            skipLevels = Math.Max(Level - 6, 0);
             PlayerPrefs.SetInt(CheckpointKey, SkipLevels);
             OnDeath?.Invoke();
         }

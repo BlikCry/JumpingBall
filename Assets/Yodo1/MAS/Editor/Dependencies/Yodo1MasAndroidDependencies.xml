@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dependencies>
+	<androidPackages>
+		<repositories>
+			<repository>https://android-sdk.is.com</repository>
+<!--			<repository>http://nexus.yodo1.com:8081/repository/maven-yodo1mas-preview/</repository>-->
+			<repository>https://artifact.bytedance.com/repository/pangle/</repository>
+			<repository>https://sdk.tapjoy.com/</repository>
+		</repositories>
+		<androidPackage spec="com.yodo1.mas:full:4.2.1" />
+	</androidPackages>
+</dependencies>
