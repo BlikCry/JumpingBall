@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Mycom.Tracker.Unity;
+using UnityEngine;
 using Yodo1.MAS;
 
 internal class AdScript: MonoBehaviour
@@ -15,6 +16,16 @@ internal class AdScript: MonoBehaviour
         
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
         Yodo1U3dMas.InitializeSdk();
+
+        #if UNITY_ANDROID
+            var myTrackerConfig = MyTracker.MyTrackerConfig;
+            myTrackerConfig.Region = RegionEnum.RU;
+            myTrackerConfig.IsTrackingLaunchEnabled = true;
+            myTrackerConfig.BufferingPeriod = 1;
+            myTrackerConfig.LaunchTimeout = 5;
+            MyTracker.Init("68798549201007709471");
+        #endif
     }
 }

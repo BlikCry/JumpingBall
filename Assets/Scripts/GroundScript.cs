@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 public class GroundScript : MonoBehaviour
 {
     public const string CheckpointKey = "CHECKPOINT";
+    private const int SkipLevelsStepEdge = 30;
 
     [SerializeField]
     private BallJump ballJump;
@@ -37,11 +38,14 @@ public class GroundScript : MonoBehaviour
     private bool isDead;
 
     private static int skipLevels;
+    private int skipLevelsStep;
 
     private void Awake()
     {
         Instance = this;
         skipLevels = PlayerPrefs.GetInt(CheckpointKey, 0);
+        skipLevelsStep = skipLevels / SkipLevelsStepEdge;
+
         currentInnerGround = startupCircle;
         
     }
@@ -62,7 +66,7 @@ public class GroundScript : MonoBehaviour
         if (ballJump.Position.y < deathLevel)
         {
             isDead = true;
-            skipLevels = Math.Max(Level - 6, 0);
+            skipLevels = Math.Max(Level / 10 * 10 - 1, 0);
             PlayerPrefs.SetInt(CheckpointKey, SkipLevels);
             OnDeath?.Invoke();
         }
@@ -73,6 +77,20 @@ public class GroundScript : MonoBehaviour
         {
             if (skipLevels > 0)
             {
+                if (skipLevels > SkipLevelsStepEdge)
+                {
+                    if (skipLevels - skipLevelsStep < SkipLevelsStepEdge)
+                    {
+                        Level += skipLevels - SkipLevelsStepEdge;
+                        skipLevels = SkipLevelsStepEdge;
+                    }
+                    else
+                    {
+                        skipLevels -= skipLevelsStep;
+                        Level += skipLevelsStep;
+                    }
+                }
+                
                 skipLevels--;
                 ChangeGround();
             }
@@ -126,8 +144,10 @@ public class GroundScript : MonoBehaviour
         currentInnerGround.GetComponent<CircleScaler>().Scale = 1f;
         currentInnerGround.GetComponent<Animation>().Play();
         currentInnerGround.GetComponentsInChildren<PolygonCollider2D>().ToList().ForEach(c => c.enabled = true);
-        ballJump.BallSpriteRenderer.color = currentInnerGround.GetComponent<SpriteRenderer>().color;
-
+        var color = currentInnerGround.GetComponent<SpriteRenderer>().color;
+        ballJump.BallSpriteRenderer.color = color;
+        var particlesMain = ballJump.Particles.main;
+        particlesMain.startColor = color;
         currentOuterGround = currentInnerGround;
         currentInnerGround = newGround;
     }

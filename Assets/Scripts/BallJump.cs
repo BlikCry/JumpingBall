@@ -16,23 +16,32 @@ public class BallJump : MonoBehaviour
     public Vector2 Position => ballRigidbody.position;
     public GameObject Ball => ballRigidbody.gameObject;
     public SpriteRenderer BallSpriteRenderer { get; private set; }
+    public ParticleSystem Particles { get; private set; }
 
     private CircleCollider2D circleCollider;
     private bool isJumping;
     private float lastJumpTime = float.NegativeInfinity;
 
+    private bool previousGroundedState;
+
     private void Awake()
     {
         BallSpriteRenderer = ballRigidbody.GetComponent<SpriteRenderer>();
         circleCollider = ballRigidbody.GetComponent<CircleCollider2D>();
+        Particles = ballRigidbody.GetComponentInChildren<ParticleSystem>();
     }
 
     private void Update()
     {
         if (!GroundScript.Instance.PrepareStarted)
             return;
+        var groundedState = IsBallGrounded();
 
-        if (IsBallGrounded() && jumpButton.IsPointerDown) //Input.GetKeyDown(KeyCode.Mouse0))
+        if (groundedState && !previousGroundedState)
+            Particles.Play();
+        previousGroundedState = groundedState;
+
+        if (groundedState && jumpButton.IsPointerDown) //Input.GetKeyDown(KeyCode.Mouse0))
         {
             DoJump();
             isJumping = true;

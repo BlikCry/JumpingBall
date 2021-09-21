@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Yodo1.MAS;
+using Random = UnityEngine.Random;
 
 public class GameUI : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class GameUI : MonoBehaviour
     [SerializeField]
     private GameObject playGamesButton;
     [SerializeField]
+    private GameObject vibrationOffButton;
+    [SerializeField]
     private List<GameObject> disableOnStart;
     [SerializeField]
     private List<GameObject> enableOnStart;
@@ -31,8 +34,8 @@ public class GameUI : MonoBehaviour
     private int highScore;
     private bool isHighScoreShown;
 
+    private static bool isVibrationEnabled = true;
     private static bool beginGame;
-    private static bool canContinue = true;
 
     private void Awake()
     {
@@ -53,12 +56,13 @@ public class GameUI : MonoBehaviour
             playGamesButton.SetActive(!LeaderboardScript.IsAuthenticated);
         }
 
+        vibrationOffButton.SetActive(!isVibrationEnabled && !GroundScript.Instance.PrepareStarted);
         levelText.text = Mathf.Max(GroundScript.Instance.Level, 1).ToString();
         skipLevelText.text = (GroundScript.Instance.SkipLevels + 1).ToString();
         if (GroundScript.Instance.Level > highScore)
         {
             if (!isHighScoreShown)
-                Handheld.Vibrate();
+                Vibrate();
             isHighScoreShown = true;
             highScore = GroundScript.Instance.Level;
             PlayerPrefs.SetInt(HighScoreKey, highScore);
@@ -84,7 +88,12 @@ public class GameUI : MonoBehaviour
     {
         Time.timeScale = scale;
     }
-    
+
+    public void SetVibrationState(bool state)
+    {
+        isVibrationEnabled = state;
+    }
+
     public void BeginGame()
     {
         beginGame = true;
@@ -92,14 +101,30 @@ public class GameUI : MonoBehaviour
 
     public void ReloadLevel()
     {
-        canContinue = true;
         var id = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(id);
+        Yodo1U3dMas.SetInterstitialAdDelegate((adEvent, error) =>
+        {
+            switch (adEvent)
+            {
+                case Yodo1U3dAdEvent.AdClosed:
+                    SceneManager.LoadScene(id);
+                    break;
+                case Yodo1U3dAdEvent.AdOpened:
+                    break;
+                case Yodo1U3dAdEvent.AdError:
+                    break;
+            }
+        });
+        if (Yodo1U3dMas.IsInterstitialAdLoaded() && Random.value < 0.2)
+            Yodo1U3dMas.ShowInterstitialAd();
+        else
+            SceneManager.LoadScene(id);
     }
 
     public void Continue()
     {
-        Yodo1U3dMas.SetRewardedAdDelegate((adEvent, error) => {
+        Yodo1U3dMas.SetRewardedAdDelegate((adEvent, error) =>
+        {
             switch (adEvent)
             {
                 case Yodo1U3dAdEvent.AdClosed:
@@ -109,7 +134,6 @@ public class GameUI : MonoBehaviour
                 case Yodo1U3dAdEvent.AdError:
                     break;
                 case Yodo1U3dAdEvent.AdReward:
-                    canContinue = false;
                     PlayerPrefs.SetInt(GroundScript.CheckpointKey, GroundScript.Instance.Level - 1);
                     beginGame = true;
                     var id = SceneManager.GetActiveScene().buildIndex;
@@ -117,7 +141,7 @@ public class GameUI : MonoBehaviour
                     break;
             }
         });
-        
+
         Yodo1U3dMas.ShowRewardedAd();
     }
 
@@ -130,11 +154,18 @@ public class GameUI : MonoBehaviour
     {
         LeaderboardScript.SignIn();
     }
+
     private void OnBallDeath()
     {
-        Handheld.Vibrate();
+        Vibrate();
         restartUI.SetActive(true);
-        continueButton.SetActive(canContinue && Yodo1U3dMas.IsRewardedAdLoaded());
+        continueButton.SetActive(GroundScript.Instance.Level % 10 != 0 && Yodo1U3dMas.IsRewardedAdLoaded());
         LeaderboardScript.SetLeaderboardResult(GPGSIds.leaderboard_completed_levels, GroundScript.Instance.Level);
+    }
+
+    private void Vibrate()
+    {
+        if (isVibrationEnabled)
+            Handheld.Vibrate();
     }
 }
