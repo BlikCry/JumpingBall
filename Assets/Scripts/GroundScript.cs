@@ -109,9 +109,9 @@ public class GroundScript : MonoBehaviour
     {
         Level++;
         var obj = circle;
-        if (Level >= 7 && Level < 12 && Random.value < 0.5)
+        if (Level >= 10 && Level < 20 && Random.value < 0.5)
             obj = angle5;
-        if (Level >= 12 && Level < 20)
+        if (Level >= 20 && Level < 30)
         {
             var value = Random.Range(0, 3);
             if (value == 1)
@@ -119,7 +119,7 @@ public class GroundScript : MonoBehaviour
             if (value == 2)
                 obj = square;
         }
-        if (Level >= 20)
+        if (Level >= 30)
         {
             var value = Random.Range(0, 4);
             if (value == 1)

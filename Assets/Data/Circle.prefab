@@ -625,7 +625,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minSpeed: 40
   maxSpeed: 140
-  speedPerLevel: 10
+  speedPerLevel: 3
   totalMaxSpeed: 200
   speedDelta: 50
 --- !u!114 &1284004141
